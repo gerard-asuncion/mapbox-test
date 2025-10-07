@@ -18,6 +18,7 @@ const App: React.FC = () => {
 
 
   useEffect(() => {
+
     if (mapContainerRef.current) {
       mapboxgl.accessToken = import.meta.env.VITE_MAPBOXGL_ACCESS_TOKEN;
       
@@ -45,13 +46,26 @@ const App: React.FC = () => {
     return () => {
       mapRef.current?.remove();
     };
+    
   }, []);
+
+  const handleButtonClick = () => {
+    if (!mapRef.current) return;
+    mapRef.current.flyTo({
+      center: INITIAL_CENTER,
+      zoom: INITIAL_ZOOM
+    })
+  }
+
 
   return (
     <>
       <div className="sidebar">
         Longitude: {center[0].toFixed(4)} | Latitude: {center[1].toFixed(4)} | Zoom: {zoom.toFixed(2)}
       </div>
+      <button className='reset-button' onClick={handleButtonClick}>
+        Barcelona
+      </button>
       <div id='map-container' ref={mapContainerRef} />
     </>
   );
